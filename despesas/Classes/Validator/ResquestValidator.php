@@ -43,7 +43,10 @@ class ResquestValidator
   private function direcionaRequisicao()
   {
     //verifica se o metodo é post ou put e trata o json da requisição
-    if ($this->requisicao['metodo'] !== self::GET && $this->requisicao['metodo'] !== self::DELETE) {
+    if ($this->requisicao['metodo'] !== self::GET && $this->requisicao['metodo'] !== self::DELETE
+     && in_array($this->requisicao['rota'], Constantes::requisicoesPost, true) 
+     || in_array($this->requisicao['rota'], Constantes::requisicoesPut, true)) {
+      
       $this->dadosRequisicao = JsonUtil::tratarBody();
     }
 
