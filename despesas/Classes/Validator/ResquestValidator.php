@@ -76,11 +76,10 @@ class ResquestValidator
 
   private function PUT()
   {
-    //verifica se a rota é permitida, se esta declarada no arquivo de constantes
-    if (in_array($this->requisicao['rota'], Constantes::requisicoesPut, true)) {
-      // ['editarDespesa', 'editarCategoria'];
 
-      //verifica qual a rota e chama o metodo correspondente
+    if (in_array($this->requisicao['rota'], Constantes::requisicoesPut, true)) {
+
+
       switch ($this->requisicao['rota']) {
         case Constantes::requisicoesPut[0]: // '/editarDespesa'
           $retorno = DespesaService::editarDespesa($this->dadosRequisicao, $this->requisicao['parametro1']);
@@ -90,7 +89,7 @@ class ResquestValidator
           $retorno = CategoriaService::editarCategoria($this->dadosRequisicao, $this->requisicao['parametro1']);
           break;
       }
-      return $retorno; //retorna a resposta da requisição
+      return $retorno;
     } else {
       throw new Exception('Rota nao permitida');
     }
@@ -99,10 +98,8 @@ class ResquestValidator
   private function GET()
   {
 
-    //verifica se a rota é permitida, se esta declarada no arquivo de constantes
     if (in_array($this->requisicao['rota'], Constantes::requisicoesGet, true)) {
 
-      //verifica qual a rota e chama o metodo correspondente
       switch ($this->requisicao['rota']) {
         case Constantes::requisicoesGet[0]: // ''
           $retorno = DespesaService::getListDespesas();
@@ -133,22 +130,25 @@ class ResquestValidator
           break;
           // pdfdespesas
         case Constantes::requisicoesGet[7]: // '/pdfdespesas'
-          $retorno = DespesaService::gerarPdfDespesas($this->requisicao['parametro1'], $this->requisicao['parametro2']);
+          $retorno = DespesaService::gerarDadosPdfDespesas($this->requisicao['parametro1'], $this->requisicao['parametro2']);
+          break;
+
+        case Constantes::requisicoesGet[8]: // '/excelDespesas'
+          $retorno = DespesaService::gerarDadosExcelDespesas();
           break;
       }
-      return $retorno; //retorna a resposta da requisição
+      return $retorno;
     } else {
       throw new Exception('Rota nao permitida');
     }
   }
 
-
   private function DELETE()
   {
-    //verifica se a rota é permitida, se esta declarada no arquivo de constantes
+
     if (in_array($this->requisicao['rota'], Constantes::requisicoesDelete, true)) {
 
-      //verifica qual a rota e chama o metodo correspondente
+
       switch ($this->requisicao['rota']) {
         case Constantes::requisicoesDelete[0]: // '/excluirDespesa'
           $retorno = DespesaService::excluirDespesa($this->requisicao['parametro1']);
@@ -158,7 +158,7 @@ class ResquestValidator
           $retorno = CategoriaService::excluirCategoria($this->requisicao['parametro1']);
           break;
       }
-      return $retorno; //retorna a resposta da requisição
+      return $retorno;
     } else {
       throw new Exception('Rota nao permitida');
     }

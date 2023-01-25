@@ -6,8 +6,6 @@ use Repository\DespesaRepository;
 use Repository\Tipo_PagamentoRepository;
 use Repository\CategoriaRepository;
 use Exception;
-use fpdf\FPDF;
-
 
 class DespesaService
 {
@@ -78,8 +76,23 @@ class DespesaService
         return DespesaRepository::updateDespesa($despesa, $id);
     }
 
-    //gera o pdf com as despesas
-    public static function gerarPdfDespesas($data1, $data2)
+    public static function gerarDadosExcelDespesas()
+    {
+
+        //busca no banco de dados as despesas do mes vigente
+        $dados = DespesaRepository::findDespesasByData(date('Y-m-01'), date('Y-m-t'));
+
+        //percorre todas as despesas do array e converte
+        for ($i = 0; $i < count($dados); $i++) {
+            $dados[$i] = self::ConverteDespesaFK($dados[$i]);
+        }
+
+        $dados['tipo'] = 'excel';
+
+        return $dados;
+    }
+
+    public static function gerarDadosPdfDespesas($data1, $data2)
     {
 
         //valida as datas
@@ -87,17 +100,13 @@ class DespesaService
             throw new Exception("Data nao pode ser nula");
         }
         if ($data1 > $data2) {
-            echo "Data inicial nao pode ser maior que a data final";
-            exit;
             throw new Exception("Data inicial nao pode ser maior que a data final");
         }
 
-        //valida a data com regex no formato yyyy-mm-dd
         if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $data1) || !preg_match("/^\d{4}-\d{2}-\d{2}$/", $data2)) {
             throw new Exception("Data invalida");
         }
 
-        //busca os dados no banco
         $dados = DespesaRepository::findDespesasByData($data1, $data2);
 
         //percorre todas as despesas do array e converte
@@ -105,32 +114,8 @@ class DespesaService
             $dados[$i] = self::ConverteDespesaFK($dados[$i]);
         }
 
-        $pdf = new FPDF('p', 'mm', 'A4');
-        $pdf->AddPage();
+        $dados['tipo'] = 'pdf';
 
-        $pdf->SetFont('Arial', 'B', 16);
-
-        $pdf->Cell(190, 10, mb_convert_encoding('Relatório de Despesas', 'ISO-8859-1', 'UTF-8'), 0, 0, 'C');
-        $pdf->Ln(15);
-
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(20, 10, 'Valor', 1, 0, 'C');
-        $pdf->Cell(45, 10, 'Data', 1, 0, 'C');
-        $pdf->Cell(27, 10, 'Pagamento', 1, 0, 'C');
-        $pdf->Cell(40, 10, 'Categoria', 1, 0, 'C');
-        $pdf->Cell(66, 10, mb_convert_encoding('Descrição', 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-        $pdf->Ln();
-
-        foreach ($dados as $dado) {
-            $pdf->Cell(20, 10, 'R$ ' . mb_convert_encoding($dado->valor, 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-            $pdf->Cell(45, 10, mb_convert_encoding($dado->data_compra, 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-            $pdf->Cell(27, 10, mb_convert_encoding($dado->tipo_pagamento_id->tipo, 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-            $pdf->Cell(40, 10, mb_convert_encoding($dado->categoria_id->nome, 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-            $pdf->Cell(66, 10, mb_convert_encoding($dado->descricao, 'ISO-8859-1', 'UTF-8'), 1, 0, 'C');
-            $pdf->Ln();
-        }
-
-        $pdf->Output();
-        exit;
+        return $dados;
     }
 }

@@ -8,13 +8,11 @@ use Exception;
 class CategoriaService
 {
 
-    //lista todas as categorias
     public static function getListCategorias()
     {
         return CategoriaRepository::findAllCategorias();
     }
 
-    //busca categoria por id
     public static function getCategoriaById($id)
     {
         if ($id == null) {
@@ -24,7 +22,6 @@ class CategoriaService
         return CategoriaRepository::findCategoriaById($id);
     }
 
-    //exclui categoria por id
     public static function excluirCategoria($id)
     {
         if ($id == null) {
@@ -34,7 +31,6 @@ class CategoriaService
         return CategoriaRepository::deleteCategoria($id);
     }
 
-    //insere categoria
     public static function cadastrarCategoria($categoria)
     {
 
@@ -45,7 +41,6 @@ class CategoriaService
         return CategoriaRepository::insertCategoria($categoria);
     }
 
-    //atualiza categoria
     public static function editarCategoria($categoria, $id)
     {
         if ($id == null) {

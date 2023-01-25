@@ -8,7 +8,6 @@ use Exception;
 class RepositoryGenerico
 {
 
-    //metodo para buscar todos os dados de uma tabela
     public static function findAll($tabela)
     {
         try {
@@ -28,7 +27,6 @@ class RepositoryGenerico
         }
     }
 
-    //metodo para excliur um registro de uma tabela
     public static function delete($tabela, $id)
     {
         try {
@@ -49,7 +47,6 @@ class RepositoryGenerico
         }
     }
 
-    //metodo para buscar um registro de uma tabela por id
     public static function findById($tabela, $id)
     {
         try {

@@ -8,13 +8,11 @@ use Exception;
 class TipoPagamentoService
 {
 
-    //lista todas as categorias
     public static function getListTiposPagamento()
     {
         return Tipo_PagamentoRepository::findAllTiposPagamentos();
     }
 
-    //busca categoria por id
     public static function getTipoPagamentoById($id)
     {
         if ($id == null) {

@@ -21,25 +21,4 @@ class JsonUtil
             throw new Exception("Erro ao tratar o Json da requisição");
         }
     }
-
-    public function tratarRetorno($retorno)
-    {
-
-        $dados['data'] = null;
-        $dados['sucess'] = 'false';
-
-        //verifa se o retorno é um array ou objeto e se tem mais de 0 elementos
-        if (is_array($retorno) || is_object($retorno) && count((array)$retorno) > 0) {
-            $dados['sucess'] = 'true';
-            $dados['data'] = $retorno;
-        }
-
-        $this->retornaJson($dados);
-    }
-
-    private function retornaJson($dados)
-    {
-        header('Content-Type: application/json');
-        echo json_encode($dados);
-    }
 }

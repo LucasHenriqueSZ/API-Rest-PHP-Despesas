@@ -11,34 +11,33 @@ class CategoriaRepository
 
     const tabelaCategoria = "categorias";
 
-    //lista de todas as categorias
     public static function findAllCategorias()
     {
         return RepositoryGenerico::findAll(self::tabelaCategoria);
     }
 
-    //busca categoria por id
     public static function findCategoriaById($id)
     {
         return RepositoryGenerico::findById(self::tabelaCategoria, $id);
     }
 
-    //deleta categoria por id
     public static function deleteCategoria($id)
     {
         return RepositoryGenerico::delete(self::tabelaCategoria, $id);
     }
 
-    //busca categoria por nome
     public static function findCategoriaByNome($nome)
     {
         return RepositoryGenerico::findByColumn(self::tabelaCategoria, 'nome', $nome);
     }
 
-    //insere categoria
     public static function insertCategoria($categoria)
     {
         try {
+            if ($categoria['nome'] == '' || $categoria['descricao'] == '') {
+                throw new Exception("Todos os campos devem ser preenchidos");
+            }
+
             $sql = "INSERT INTO " . self::tabelaCategoria . " ( `nome`, `descricao`) VALUES (:nome, :descricao)";
             $stmt = DBconnection::prepare($sql);
             $stmt->bindParam(':nome', strtolower($categoria['nome']));
@@ -57,7 +56,6 @@ class CategoriaRepository
         }
     }
 
-    //atualiza categoria
     public static function updateCategoria($categoria, $id)
     {
         try {

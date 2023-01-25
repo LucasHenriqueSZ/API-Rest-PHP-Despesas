@@ -13,29 +13,30 @@ class DespesaRepository
 
     const tabelaDespesa = "despesas";
 
-    //lista de todas as despesas
     public static function findAllDespesas()
     {
         return RepositoryGenerico::findAll(self::tabelaDespesa);
     }
 
-    //busca despesa por id
     public static function findDespesaById($id)
     {
         return RepositoryGenerico::findById(self::tabelaDespesa, $id);
     }
 
-    //exclui despesa por id
     public static function deleteDespesaById($id)
     {
         return RepositoryGenerico::delete(self::tabelaDespesa, $id);
     }
 
-    //insere despesa
     public static function insertDespesa($despesa)
     {
 
         try {
+
+            if ($despesa['valor'] == "" || $despesa['data_compra'] == "" || $despesa['descricao'] == "" || $despesa['tipo_pagamento'] == "" || $despesa['categoria'] == "") {
+                throw new Exception("Todos os campos devem ser preenchidos");
+            }
+
             $sql = "INSERT INTO " . self::tabelaDespesa . " ( `valor`, `data_compra`, `descricao`, `tipo_pagamento_id`, `categoria_id`) VALUES (:valor,:data, :descricao, :tipo_Pagamento , :categoria_id)";
             $stmt = DBconnection::prepare($sql);
             $stmt->bindParam(':valor', $despesa['valor']);
