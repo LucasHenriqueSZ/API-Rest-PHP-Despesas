@@ -295,6 +295,8 @@ API para o gerenciamento de despesas domésticas
       
 ## PDF de despesas por intervalo de tempo
 
+Para gerar o PDF é necessario incluir a biblioteca [FPDF](http://www.fpdf.org)
+
 ```
   GET /api/despesas/pdfdespesas.pdf/{data}/{data}
 ```
