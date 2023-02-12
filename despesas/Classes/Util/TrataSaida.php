@@ -20,6 +20,10 @@ class TrataSaida
             $dados['data'] = $retorno;
         }
 
+        if (is_object($retorno)) {
+            $this->retornaJson($dados);exit;
+        }
+
         switch ($retorno['tipo']) {
             case 'pdf':
                 $this->retornaPdf($retorno);
