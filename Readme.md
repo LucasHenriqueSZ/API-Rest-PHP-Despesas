@@ -295,13 +295,15 @@ API para o gerenciamento de despesas domésticas
       
 ## PDF de despesas por intervalo de tempo
 
+Para gerar o PDF é necessario incluir a biblioteca [FPDF](http://www.fpdf.org)
+
 ```
   GET /api/despesas/pdfdespesas.pdf/{data}/{data}
 ```
 - Resposta:
 
 Gera o PDF com as despesas do intervalo de tempo informado
-![PDF](.git/pdfExamplo.png)
+![PDF](https://firebasestorage.googleapis.com/v0/b/lucas-henrique-d45fe.appspot.com/o/pdfExamplo.png?alt=media&token=faf3f742-2e61-4193-9294-332dc7b7d915)
 
 - Resposta erros:
 
@@ -318,7 +320,7 @@ Gera o PDF com as despesas do intervalo de tempo informado
 - Resposta:
 
     Faz o download do arquivo Excel com as despesas do mes vigente
-    ![Excel](.git/ExcelExamplo.png)
+    ![Excel](https://firebasestorage.googleapis.com/v0/b/lucas-henrique-d45fe.appspot.com/o/ExcelExamplo.png?alt=media&token=fd3be1f3-b363-4ca3-95c6-526e32d79198)
 
 
 
